@@ -1,0 +1,92 @@
+<div class="container" ng-show="list" id="listView">
+    <h3>Item For Sale View</h3><br>
+    <div class="row">
+        <div class="col-md-8">
+            <a ng-href="#miscs/add">Add Item</a>
+            <table class="table table-striped">
+                <thead>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                </thead>
+                <tr ng-repeat="misc in miscs">
+                    <td><a ng-href="#miscs/detail/{{misc.$id}}" >{{ misc.name }}</a></td>
+                    <td>{{ misc.category }}</td>
+                    <td>{{ misc.price }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container" ng-show="editing" id="editForm">
+    <div class="row">
+        <div class="col-md-5">
+            <h3>{{ title }}</h3><br ng-show="edit_form">
+            <img width="150" height="150" ng-src="{{ image_url }}" ng-show="edit_form"><div ng-show="edit_form"><br><br></div>
+            <p style="color: crimson">{{ error }}</p>
+            <form>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <label>Name:</label>
+                        <input type="text" class="form-control" ng-model="misc.name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <label>Category:</label>
+                        <input type="text" class="form-control" ng-model="misc.category">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <label>Price:</label>
+                        <input type="text" class="form-control" ng-model="misc.price">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10">
+                        <label>Description:</label>
+                        <textarea rows="4" class="form-control" ng-model="misc.description"></textarea>
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-primary btn-lg" value="Submit" ng-click="update(misc)">
+            </form>
+        </div>
+    </div>
+</div>
+<!-- END EDIT VIEW -->
+<!-- DETAIL VIEW -->
+<div class="container" ng-show="detail" id="detailView">
+    <div class="row">
+        <div class="col-md-5">
+            <h3>{{ title }}</h3><br/>
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ misc.name }}
+                    <a style="float: right; cursor: pointer;" ng-show="display_message_link" ng-click="openChat(misc.creatorID)"> Message Seller </a>
+                    <div style="float: right">
+                        <a ng-href="#miscs/{{ misc.$id }}" ng-show="misc.allow_edit"> Edit </a> <span ng-show="misc.allow_edit"> &bull;</span>
+                        <a ng-href="#miscs" ng-click="deleteMisc(misc)" ng-show="misc.allow_delete"> Delete </a> <span ng-show="misc.allow_delete"> &bull;&nbsp;</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-8">
+                        <img ng-show="image_valid" width="150" height="150" ng-src="{{ image_url }}">
+                    </div>
+                    <div class="col-sm-5">
+                        <label>Category</label>
+                        {{ misc.category }}
+                    </div>
+                    <div class="col-sm-5">
+                        <label>Price:</label>
+                        {{ misc.price }}
+                    </div>
+                    <div class="col-md-8">
+                        <label>Description:</label>
+                        {{ misc.description }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END DETAIL VIEW -->

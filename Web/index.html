@@ -1,0 +1,134 @@
+<head>
+    <!-- Meta Config -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Required Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+    <!-- Main Angular Controllers -->
+    <script src="controllers/main/app.js"></script>
+    <script src="controllers/main/routes.js"></script>
+    <script src="controllers/main/filters.js"></script>
+
+    <!-- Angular Services -->
+    <script src="controllers/services/authService.js"></script>
+    <script src="controllers/services/chatService.js"></script>
+    <script src="controllers/services/itemService.js"></script>
+    <script src="controllers/services/userService.js"></script>
+
+    <!-- Angular View Controllers -->
+    <script src="controllers/content/adminController.js"></script>
+    <script src="controllers/content/foodController.js"></script>
+    <script src="controllers/content/ticketController.js"></script>
+    <script src="controllers/content/textbookController.js"></script>
+    <script src="controllers/content/miscController.js"></script>
+    <script src="controllers/content/profileController.js"></script>
+    <script src="controllers/content/chatController.js"></script>
+
+    <!-- Styles -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/chat.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <!-- Title -->
+    <title>Welcome to The MU</title>
+</head>
+
+<div ng-app="app">
+    <div ng-controller="headerController">
+        <!-- Navigation Bar -->
+
+        <nav class="navbar navbar-inverse" role="navigation">
+
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" ng-click="isNavCollapsed = !isNavCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#main" ng-click="isNavCollapsed = true"><img style="position: relative; top: -6px;" src="images/normal_logo.png" width="40px"></a>
+
+            </div>
+            <div class="navbar-collapse" uib-collapse="isNavCollapsed">
+                <ul class="nav navbar-nav">
+                    <li><a href="#textbooks" ng-click="isNavCollapsed = true" ng-show="display_Navinfo">Textbooks</a></li>
+                    <li><a href="#tickets" ng-click="isNavCollapsed = true" ng-show="display_Navinfo">Tickets</a></li>
+                    <li><a href="#miscs" ng-click="isNavCollapsed = true" ng-show="display_Navinfo">Random Goods</a></li>
+                    <li><a href="#foods" ng-click="isNavCollapsed = true" ng-show="display_Navinfo">Food</a></li>
+                </ul>
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="btn-group" uib-dropdown is-open="status.isOpen">
+                            <a class="btn-group" ng-hide="display_Navinfo" ng-href="https://accounts.google.com/logout" target="_blank">Google Sign Out</a>
+                            <a class="btn-group" ng-hide="display_Navinfo" ng-click="authenticate()">Login</a>
+                            <a id="single-button" uib-dropdown-toggle ng-disabled="disabled" ng-show="display_Navinfo">{{ user.email | emailToNetID }}<span class="caret"></span></a>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem"><a href="#profile">Profile</a></li>
+                                <li role="menuitem"><a href="#admin" ng-show="display_Admin">Admin View</a></li>
+                                <li class="divider"></li>
+                                <li role="menuitem"><a href="#index" ng-click="signOut()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- End Navigation Bar -->
+        <center>
+            <div class="container"><h3><strong>{{ error }}</strong></h3></div>
+        </center>
+    </div>
+
+    <!-- Page Content -->
+    <div ng-controller="mainController">
+        <div ng-view=""></div>
+    </div>
+    <!-- End Page Content -->
+
+    <!-- Chat View -->
+    <div ng-controller="chatController">
+        <div class="chat_box" ng-hide="hide_chat">
+            <div class="chat_head" ng-click="displayHead = !displayHead">Chat</div>
+            <div class="chat_body" ng-show="displayHead">
+                <div ng-repeat="(key, user) in userList">
+                    <div ng-click="updateChatWidth('add', user, $event); user.openChat = true;" class='user' ng-show="user.displayInList">{{ user.displayName }}</div>
+                </div>
+            </div>
+                <div ng-repeat="(key, user) in userList">
+                    <div ng-style="{'right': user.chatWidth + 'px'}" class="msg_box"
+                         ng-hide="user.hide_message || !user.displayInList" >
+
+                        <div class="msg_head" ng-click="user.openChat = !user.openChat"> {{ user.displayName }}
+                            <div ng-click="updateChatWidth('sub', user, $event);" class="close">x</div>
+                        </div>
+
+                        <div class="msg_wrap" ng-show="user.openChat">
+                            <div class="msg_body">
+                                <div ng-repeat="messageData in userList[key].displayMessages">
+                                    <div ng-class="messageData.class">{{ messageData.message }}</div>
+                                </div>
+                            </div>
+                            <form>
+                                <div class="msg_footer">
+                                    <textarea ng-attr-id="{{ key }}_input" ng-keypress="send($event, user);"
+                                              class="msg_input" rows="4" style="resize: none" ng-model="inputMessages[key]"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Chat View -->
+</div>
+

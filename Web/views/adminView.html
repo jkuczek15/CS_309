@@ -1,0 +1,20 @@
+<div class="container" ng-show="list" id="listView">
+    <h3>Admin Page</h3><br>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-striped">
+                <thead>
+                <th>User Name</th>
+                <th>Rank</th>
+                <th>Click to Ban user</th>
+                </thead>
+                <tr ng-repeat="(key,user) in users">
+                    <td>{{ user.displayName }}</td>
+                    <td>{{ user.type | typeToText }}</td>
+                    <td><input type="checkbox" ng-model="user.checked"></td>
+                </tr>
+            </table>
+            <input type="submit" class="btn btn-primary btn-lg" value="Submit" ng-click="banUsers()">
+        </div>
+    </div>
+</div>

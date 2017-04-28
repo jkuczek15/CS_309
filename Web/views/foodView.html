@@ -1,0 +1,95 @@
+<!-- LIST VIEW -->
+<div class="container" ng-show="list" id="listView">
+    <h3>Food View</h3><br>
+    <div class="row">
+        <div class="col-md-8">
+            <a ng-href="#foods/add">Add Food</a>
+            <table class="table table-striped">
+                <thead>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Category</th>
+                </thead>
+                <tr ng-repeat="food in foods">
+                    <td><a ng-href="#foods/detail/{{food.$id}}" >{{ food.name }}</a></td>
+                    <td>{{ food.location }}</td>
+                    <td>{{ food.category }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- END LIST VIEW -->
+<!-- EDIT VIEW -->
+<div class="container" ng-show="editing" id="editForm">
+    <div class="row">
+        <div class="col-md-5">
+            <h3>{{ title }}</h3><br ng-show="edit_form && image_valid">
+            <img ng-show="image_valid" width="150" height="150" ng-src="{{ image_url }}" ng-show="edit_form"><div ng-show="edit_form && image_valid"><br><br></div>
+            <p style="color: crimson">{{ error }}</p>
+            <form>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <label>Name:</label>
+                        <input type="text" class="form-control" ng-model="food.name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <label>Location:</label>
+                        <input type="text" class="form-control" ng-model="food.location">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <label>Category:</label>
+                        <input type="text" class="form-control" ng-model="food.category">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-10">
+                        <label>Description:</label>
+                        <textarea rows="4" class="form-control" ng-model="food.description"></textarea>
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-primary btn-lg" value="Submit" ng-click="update(food)">
+            </form>
+        </div>
+    </div>
+</div>
+<!-- END EDIT VIEW -->
+<!-- DETAIL VIEW -->
+<div class="container" ng-show="detail" id="detailView">
+    <div class="row">
+        <div class="col-md-5">
+            <h3>{{ title }}</h3><br/>
+            <div class="panel panel-default">
+                <div class="panel-heading">{{ food.name }}
+                    <a style="float: right; cursor: pointer;" ng-show="display_message_link" ng-click="openChat(food.creatorID)"> Message Seller </a><span ng-show="display_message_link"> &bull; </span>
+                    <div style="float: right">
+                        <a ng-href="#foods/{{ food.$id }}" ng-show="food.allow_edit"> Edit </a> <span ng-show="food.allow_edit"> &bull;</span>
+                        <a ng-href="#foods" ng-click="deleteFood(food)" ng-show="food.allow_delete"> Delete </a> <span ng-show="food.allow_delete"> &bull;&nbsp;</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-8">
+                        <img ng-show="image_valid" width="150" height="150" ng-src="{{ image_url }}">
+                    </div>
+                    <div class="col-sm-5">
+                        <label>Location </label>
+                        {{ food.location }}
+                    </div>
+                    <div class="col-sm-5">
+                        <label>Category</label>
+                        {{ food.category }}
+                    </div>
+                    <div class="col-md-8">
+                        <label>Description:</label>
+                        {{ food.description }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END DETAIL VIEW -->

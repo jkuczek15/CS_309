@@ -1,0 +1,332 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head lang="en">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>The MU - Web Docs</title>
+	<!-- Framework CSS -->
+	<link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+	<style type="text/css" media="screen">
+		p, table, hr, .box { margin-bottom:25px; }
+		.box p { margin-bottom:10px; }
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<h1 class="center">The MU - Web Documentation</h1>
+		<div class="borderTop">
+			<div class="span-6 colborder info prepend-1">
+				<p class="prepend-top">
+					<strong>
+					Created: 3/8/2017<br>
+					By: Joe Kuczek And Johnathon Pine<br>
+					</strong>
+				</p>
+			</div><!-- end div .span-6 -->
+		</div><!-- end div .borderTop -->
+
+		<hr>
+
+		<h2 id="toc" class="alt">Index</h2>
+		<ol class="alpha">
+			<li><a href="#angularStructure">File Structure and Design</a></li>
+            <li><a href="#config">Angular Configuration</a></li>
+			<li><a href="#services">Services</a></li>
+			<li><a href="#controllers">Controllers</a></li>
+            <li><a href="#views">Views</a></li>
+            <li><a href="#references">Additional References</a></li>
+		</ol>
+
+		<hr>
+
+		<h3 id="angularStructure"><strong>A) File Structure and Design</strong> - <a href="#toc">top</a></h3>
+		<p>We are using AngularJS as a front-end framework for API connection, web services, routes, and Javascript logic organization. We are using bower as a package manager for giving us the latest most-stable versions of Angular, Bootstrap, and jQuery. We are using a model-view-controller design pattern, depdency injection for Angular services, and a form of the Observer pattern for attaching observers/listeners on Firebase data. The following list shows our files. All web files are written in JavaScript, excluding the views, which are written in HTML.</p>
+
+		<ul>
+            <li><strong>Header</strong>
+                <ul>
+                    <li>headerController (app.js)</li>
+                    <li>index.html (header view)</li>
+                </ul>
+            </li>
+            <li><strong>Services</strong>
+                <ul>
+                    <li>authService.js</li>
+                    <li>itemService.js</li>
+                </ul>
+            </li>
+            <li><strong>Controllers</strong>
+                <ul>
+                    <li>adminController.js</li>
+                    <li>foodController.js</li>
+                    <li>furnitureController.js</li>
+                    <li>mainController.js</li>
+                    <li>profileController.js</li>
+                    <li>textbookController.js</li>
+                    <li>ticketController.js</li>
+                </ul>
+            </li>
+            <li><strong>Views</strong>
+                <ul>
+                    <li>adminView.html</li>
+                    <li>foodView.html</li>
+                    <li>furnitureView.html</li>
+                    <li>mainView.html</li>
+                    <li>profileView.html</li>
+                    <li>textbookView.html</li>
+                    <li>ticketView.html</li>
+                </ul>
+            </li>
+            <li><strong>Angular Configuration</strong>
+                <ul>
+                    <li>app.js</li>
+                    <li>filters.js</li>
+                    <li>routes.js</li>
+                </ul>
+            </li>
+            <li><strong>Bower Components</strong>
+                <ul>
+                    <li>Angular</li>
+                    <li>Bootstrap</li>
+                    <li>jQuery</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p>App.js contains all the main config for connecting to Firebase. Each controller has a corresponding view, the controller provides data to the view via the $scope variable. Services can be injected into each controller depending on the needs of the controller.</p>
+
+		<hr>
+
+        <h3 id="config"><strong>B) Angular Configuration</strong> - <a href="#toc">top</a></h3>
+
+        <ul>
+            <li><h4><strong>app.js</strong></h4></li>
+            <ul>
+                In this file, we initialize our connection to Firebase by providing our custom API key. We also initialize our Angular module. It is important that this file is included in index.html before the rest of the controller files. This is because we initialize controllers using the module. This file also contains the headerController which handles variables for the navigation bar and authentication over each page. Our Angular app is defined in the code below:<br><br>
+
+                <img width="700" src="assets/screenshots/app.PNG">
+            </ul>
+            <li><h4><strong>filters.js</strong></h4></li>
+                <ul>
+                    In this file we provide different functions for formatting data from Firebase. The functions are as follows:<br><br>
+                    <ul>
+                        <li><strong>capitalize (word)</strong></li>
+                        <ul>
+                            <li>Description: Capitalizes the first letter of each word in the String.</li>
+                            <li>Params: word - String - The string variable to be capitalized.</li>
+                            <li>Returns: String - The capitalized string.</li>
+                        </ul>
+                        <li><strong>emailToNetID (email)</strong></li>
+                        <ul>
+                            <li>Description: Converts an ISU email to net-id by removing @iastate.edu.</li>
+                            <li>Params: email - String - The email to be converted.</li>
+                            <li>Returns: String - The converted net-id.</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </li>
+            <li><h4><strong>routes.js</strong></h4></li>
+                <ul>
+                    This file contains all of our page and URL routing. If a client hits a URL, we need to tell them what view they should see and which controller we should use. We can also resolve variables so that they are immediately available upon page load (necessary for usage of itemService). We can also provide optional parameters in our URLs. An example of a routing configuration is seen below:<br><br>
+                    <img width="700" src="assets/screenshots/routeExample.PNG">
+                </ul>
+        </ul>
+
+        <hr>
+
+        <h3 id="services"><strong>C) Services</strong> - <a href="#toc">top</a></h3>
+
+        <ul>
+            <li><h4><strong>authService</strong></h4></li>
+
+            <ul>
+                This service provides functions necessary methods for Authentication. The service injects the $firebaseObject which is used for Firebase database operations. It also injects the $firebaseAuth service which is used for handling Firebase authentication. Firebase handles all session logic for us, so we don't need to store anything on our server.<br><br>
+                <img width="700" src="assets/screenshots/authService.PNG"><br><br>
+                The service's functions are as follows:<br><br>
+                <ul>
+                    <li><strong>authenticate (): </strong></li>
+                    <ul>
+                        <li>Description: Authenticate the client by using the Firebase Google Authentitcation pop-up.</li>
+                        <li>Returns: JSON - Firebase user data on success, nothing on error.</li>
+                    </ul>
+                    <li><strong>getCurrentAuth (): </strong></li>
+                    <ul>
+                        <li>Description: Provides the current $firebaseAuth object. We can use the $firebaseAuth to create asynchronous function calls such as $onAuthStateChange.</li>
+                        <li>Returns: $firebaseAuth - Firebase Auth object for current user.</li>
+                    </ul>
+                    <li><strong>getUser (): </strong></li>
+                    <ul>
+                        <li>Description: Return the current status of the user in JSON data.</li>
+                        <li>Returns: JSON - Current user status and information.</li>
+                    </ul>
+                    <li><strong>setScope (scope): </strong></li>
+                    <ul>
+                        <li>Description: Updates the passed in $scope variable with the authenticate function, signOut function, and $firebaseAuth variable.</li>
+                        <li>Params: scope - JSON Object - The $scope variable to be updated</li>
+                    </ul>
+                    <li><strong>signOut (): </strong></li>
+                    <ul>
+                        <li>Description: Signs the current user out of Firebase.</li>
+                    </ul>
+                </ul>
+            </ul>
+
+            <li><h4><strong>itemService</strong></h4></li>
+
+            <ul>
+                This service provides functions necessary for managing 'items' from Firebase. Items can be defined as textbooks, tickets, food, and misc. To first use the service, call the setup function at the very top of the controller. Since we are making asynchronous calls, some data will not be available upon page load. To fix this, we use the $loaded function ($firebaseArray) inside routes.js to resolve the data as we are loading the webpage. We need to inject authService into itemService so that we can obtain the user ID for retrieving/updating items.<br><br>
+                <img width="700" src="assets/screenshots/itemService.PNG"><br><br>
+                The service holds the following variables:<br><br>
+                <ul>
+                    <li><strong>url:</strong> String - Mapping to Firebase data we want to use.</li>
+                    <li><strong>items:</strong> $firebaseArray - Contains all the items for the specified URL.</li>
+                    <li><strong>itemName:</strong> String - Name of the item, used for Firebase identifier in the set() method.</li>
+                </ul>
+
+                The service's functions are as follows:<br><br>
+                <ul>
+                    <li><strong>all (): </strong></li>
+                    <ul>
+                        <li>Description: Returns all the current items as a listing.</li>
+                        <li>Returns: $firebaseArray - Returns the current items (tickets, textbooks, furniture, etc.)</li>
+                    </ul>
+                    <li><strong>add (item): </strong></li>
+                    <ul>
+                        <li>Description: Adds the data held in variable item to Firebase. Generates a new key for storing the data.</li>
+                        <li>Params: item - JSON - Contains the data to be added into Firebase.</li>
+                    </ul>
+                    <li><strong>get (itemID): </strong></li>
+                    <ul>
+                        <li>Description: Returns the item data from the database at the key itemID.</li>
+                        <li>Params: itemID - String - The ID of the item to be pulled from Firebase.</li>
+                        <li>Returns: JSON - Object with data for the item.</li>
+                    </ul>
+                    <li><strong>remove (item): </strong></li>
+                    <ul>
+                        <li>Description: Deletes the Firebase key that is equivalent to item.</li>
+                        <li>Params: item - JSON Object - The item we wish to remove.</li>
+                    </ul>
+                    <li><strong>set (item, itemID): </strong></li>
+                    <ul>
+                        <li>Description: Updates the object at itemID with the data in the item object.</li>
+                        <li>Params: item - JSON Object - New item data to be added. <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    itemID - String - The key of the item to be updated.</li>
+                    </ul>
+                    <li><strong>setup (uri, name, scopeItems): </strong></li>
+                    <ul>
+                        <li>Description: Setup the URL, itemName, and items variables. This is similar to a constructor.</li>
+                        <li>Params: uri - String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            name - String<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            scopeItems - $firebaseArray</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+
+        <hr>
+
+		<h3 id="controllers"><strong>D) Controllers</strong> - <a href="#toc">top</a></h3>
+
+		<p>Below are the main controllers for our views:</p>
+
+		<ul>
+			<ul>
+				<h4><strong>&bull; adminController.js</strong></h4>
+					<ul>
+                        app.controller <br>
+						scope = {} <br>
+						Description: Admin Controller Page used for pulling in data from firebase database.
+					</ul>
+				<h4><strong>&bull; foodController.js</strong></h4>
+					<ul>
+                        app.controller <br>
+						scope = {} <br>
+						Description: Food Controller Page used for pulling in data from firebase database.
+					</ul>
+				<h4><strong>&bull; FurnitureController.js</strong></h4>
+				<ul>
+                    app.controller <br>
+					scope = {} <br>
+					Description: Furniture Controller Page used for pulling in data from firebase database.
+				</ul>
+				<h4><strong>&bull; mainController.js</strong></h4>
+				<ul>
+                    app.controller <br>
+                    scope = {} <br>
+					Description: Main Controller Page used for pulling in data from firebase database.
+				</ul>
+				<h4><strong>&bull; profileController.js</strong></h4>
+				<ul>
+                    app.controller <br>
+					scope = {} <br>
+					Description: Profile Controller Page used for pulling in data from firebase database.
+				</ul>
+				<h4><strong>&bull; textbookController.js</strong></h4>
+				<ul>
+					app.controller <br>
+
+					itemService.setup() <br>
+					<ul>Setup our items service with a database URL, item name, and item array <br>
+						books variable resolved on the route, resolved variables are only available <br>
+						in the controller, so we need to update our singleton service by passing books array <br>
+					</ul>
+
+					scope = {book} <br>
+
+					Vars: {addBook, Validate, bookID, setBook} <br>
+						<ul>addBook = Adds a book to the array of books that get listed to the page. <br>
+						Validate = Checks to make sure all the critera for the current book being added is correct <br>
+						bookID = hooks onto url of the book <br>
+						setBook = Used to update a book in the array <br>
+						</ul>
+					Description: TextBook Controller Page used for pulling in data from firebase database.
+				</ul>
+				<h4><strong>&bull; ticketController.js</strong></h4>
+				<ul>
+					app.controller <br>
+					scope = {} <br>
+					Description: Ticket Controller Page used for pulling in data from firebase database.
+				</ul>
+			</ul>
+
+		</ul>
+
+		<hr>
+
+        <h3 id="views"><strong>E) Views</strong> - <a href="#toc">top</a></h3>
+
+        <ul>
+            <ul>
+               Our views are separated into different .html files under the views folder. Each item view technically contains two separate views, the edit view and the list view. The views pull in scope data from the controllers to display formatted data to the user. The following Bootstrap CSS classes have been proven to be the most useful during UI development:<br><br>
+                <ul>
+                    <li>container - Groups and formats elements together.</li>
+                    <li>row - Create a new row for placing elements.</li>
+                    <li>col-ss-xx (example: col-md-5) - Place items using custom column sizes and grid formatting.</li>
+                    <li>form-group - Format items together inside of an HTML form.</li>
+                    <li>table table-striped - Create a neat striped Bootstrap table.</li>
+                </ul>
+            </ul>
+        </ul>
+
+        <hr>
+
+        <h3 id="references"><strong>F) Additional References</strong> - <a href="#toc">top</a></h3>
+        <ul>
+            <ul>
+                <li><a href="https://docs.angularjs.org/api">AngularJS Docs.</a></li>
+                <li><a href="https://angular-ui.github.io/bootstrap/">Angular-UI Bootstrap Docs.</a></li>
+                <li><a href="https://firebase.google.com/docs/web/setup">Firebase Docs.</a></li>
+            </ul>
+        </ul>
+
+        <hr>
+
+		<p class="append-bottom alt large"><strong>Team GB-4 (117) </strong></p>
+		<p><a href="#toc">Go To Index</a></p>
+
+		<hr class="space">
+	</div><!-- end div .container -->
+</body>
+</html>

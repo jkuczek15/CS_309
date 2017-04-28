@@ -1,0 +1,11 @@
+{
+  "name": "cs_309",
+  "description": "Market app for Iowa State students.",
+  "main": "index.html",
+  "license": "",
+  "homepage": "",
+  "dependencies": {
+    "angular-bootstrap": "^2.5.0",
+    "bootstrap": "^3.3.7"
+  }
+}
